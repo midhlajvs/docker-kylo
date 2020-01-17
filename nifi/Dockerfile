@@ -35,7 +35,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/teradata/kylo.git /opt/kylok8s && \
     cd /opt/kylok8s && \
-    git checkout tags/v0.9.1.1 && \
+    git checkout tags/v0.9.1.3 && \
     mvn clean install -DskipTests
 
 RUN cd /opt/kylok8s && \
@@ -47,8 +47,8 @@ RUN cd /opt/kylok8s && \
 
 ##########
 
-FROM govcloud/docker-nifi:1.6.0
-LABEL maintainer="William Hearn <william.hearn@canada.ca>"
+FROM nexquare/nifi-parent:1.6.0
+LABEL maintainer="Midhlaj VS <midhlaj.vs@nexquare.io>"
 LABEL site="https://nifi.apache.org/"
 
 ARG UID=1000

@@ -35,7 +35,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/teradata/kylo.git /opt/kylok8s && \
     cd /opt/kylok8s && \
-    git checkout tags/v0.9.1.1 && \
+    git checkout tags/v0.9.1.3 && \
     mvn clean install -DskipTests
 
 RUN cd /opt/kylok8s && \
@@ -44,13 +44,14 @@ RUN cd /opt/kylok8s && \
     mkdir -p /opt/kylo/kylo-ui && \
     cp -a install/install-tar/target/kylo/kylo-ui/lib /opt/kylo/kylo-ui/ && \
     cp -a install/install-tar/target/kylo/kylo-ui/plugin /opt/kylo/kylo-ui/ && \
+    cp -a install/install-tar/target/kylo/kylo-ui/conf /opt/kylo/kylo-ui/ && \
     cp -a install/install-tar/target/kylo/bin /opt/kylo && \
     cp -a install/install-tar/target/kylo/lib /opt/kylo
 
 ##########
 
 FROM openjdk:8-jre
-LABEL maintainer="William Hearn <william.hearn@canada.ca>"
+LABEL maintainer="Midhlaj VS <midhlaj.vs@nexquare.io>"
 LABEL site="https://nifi.apache.org/"
 
 ARG UID=1000

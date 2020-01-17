@@ -35,7 +35,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/teradata/kylo.git /opt/kylok8s && \
     cd /opt/kylok8s && \
-    git checkout tags/v0.9.1.1 && \
+    git checkout tags/v0.9.1.3 && \
     mvn clean install -DskipTests
 
 RUN cd /opt/kylok8s && \
@@ -45,13 +45,14 @@ RUN cd /opt/kylok8s && \
     if [ ! -f install/install-tar/target/kylo/kylo-services/lib/postgresql-42.1.4.jar ] ;then curl -o install/install-tar/target/kylo/kylo-services/lib/postgresql-42.1.4.jar http://central.maven.org/maven2/org/postgresql/postgresql/42.1.4/postgresql-42.1.4.jar ;fi  && \
     cp -a install/install-tar/target/kylo/kylo-services/lib /opt/kylo/kylo-services/ && \
     cp -a install/install-tar/target/kylo/kylo-services/plugin /opt/kylo/kylo-services/ && \
+    cp -a install/install-tar/target/kylo/kylo-services/conf /opt/kylo/kylo-services/ && \
     cp -a install/install-tar/target/kylo/bin /opt/kylo && \
     cp -a install/install-tar/target/kylo/lib /opt/kylo
 
 ##########
 
 FROM openjdk:8-jre
-LABEL maintainer="William Hearn <william.hearn@canada.ca>"
+LABEL maintainer="Midhlaj VS <midhlaj.vs@nexquare.io>"
 LABEL site="https://nifi.apache.org/"
 
 ARG UID=1000
