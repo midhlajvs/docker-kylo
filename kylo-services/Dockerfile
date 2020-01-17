@@ -78,6 +78,9 @@ RUN rm -f /opt/kylo/kylo-services/lib/jetty* && \
     adduser kylo kylo && \
     chown -R kylo:kylo /opt/kylo
 
+#Add the dropzone directory
+RUN mkdir -p /var/dropzone
+
 # Impala JDBC driver
 RUN wget -q https://downloads.cloudera.com/connectors/impala_jdbc_2.5.42.1062.zip && \
     unzip impala_jdbc_2.5.42.1062.zip && \

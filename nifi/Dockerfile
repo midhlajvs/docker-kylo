@@ -61,6 +61,7 @@ COPY --from=kylok8sBuild /opt/nifi/data/lib /opt/nifi/data/lib
 USER root
 
 RUN mkdir -p /opt/nifi/activemq && \
+    mkdir -p /opt/nifi/mysql && \
     mkdir -p /opt/nifi/drivers && \
     mkdir -p /opt/nifi/nifi-1.6.0/lib/app && \
     mkdir -p /opt/nifi/dump && \
@@ -82,9 +83,10 @@ ENV PATH=$PATH:/opt/spark/bin
 
 # Kylo JARS + Deps
 RUN /opt/nifi/data/lib/create-symbolic-links.sh /opt/nifi nifi nifi && \
-    wget http://central.maven.org/maven2/org/apache/activemq/activemq-all/5.15.0/activemq-all-5.15.0.jar -P /opt/nifi/activemq/ && \
-    wget http://central.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.2.4/mariadb-java-client-2.2.4.jar -P /opt/nifi/drivers/ && \
-    wget http://central.maven.org/maven2/org/apache/hive/hcatalog/hive-hcatalog-core/2.3.2/hive-hcatalog-core-2.3.2.jar -P /opt/nifi/drivers/ && \
+    wget https://central.maven.org/maven2/org/apache/activemq/activemq-all/5.15.0/activemq-all-5.15.0.jar -P /opt/nifi/activemq/ && \
+    wget https://central.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.2.4/mariadb-java-client-2.2.4.jar -P /opt/nifi/drivers/ && \
+    wget https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/1.5.7/mariadb-java-client-1.5.7.jar -P /opt/nifi/mysql/ && \
+    wget https://central.maven.org/maven2/org/apache/hive/hcatalog/hive-hcatalog-core/2.3.2/hive-hcatalog-core-2.3.2.jar -P /opt/nifi/drivers/ && \
     wget https://jdbc.postgresql.org/download/postgresql-42.2.4.jar -P /opt/spark/jars/
 
 # Impala JDBC driver
