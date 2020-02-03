@@ -16,13 +16,13 @@
 # under the License.
 #
 
-FROM apache/nifi:1.6.0
+FROM apache/nifi:1.7.1
 LABEL maintainer="Apache NiFi <dev@nifi.apache.org>"
 LABEL site="https://nifi.apache.org"
 
 ARG UID=1000
 ARG GID=1000
-ARG NIFI_VERSION=1.6.0
+ARG NIFI_VERSION=1.7.1
 ARG MIRROR=https://archive.apache.org/dist
 
 USER root
@@ -52,7 +52,7 @@ EXPOSE 8080 8443 10000
 
 COPY ./scripts/nifi-env.sh $NIFI_HOME/bin/nifi-env.sh
 COPY ./scripts/docker-entrypoint.sh /
-COPY ./templates/ /${NIFI_BASE_DIR}/data/templates/
+#COPY ./templates/ /${NIFI_BASE_DIR}/data/templates/
 RUN chmod 700 /docker-entrypoint.sh
 
 WORKDIR $NIFI_HOME

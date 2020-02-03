@@ -22,7 +22,7 @@ nifi_properties()  {
 
 # Runtime adjustments
 create_keystore
-nifi_properties
+#nifi_properties
 
 # Ensure correct permissions
 chown nifi:nifi /opt/nifi/data

@@ -1,0 +1,62 @@
+version: '2'
+services: 
+  esnx:
+    image: nexquare/elasticsearch:1
+    container_name: esnx
+    environment:
+      - node.name=esnx
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data-esnx:/usr/share/elasticsearch/data
+    networks:
+      - kylo
+  activemq:
+    image: nexquare/activemq:1
+    container_name: activemq
+    networks:
+      - kylo
+  nifi:
+    image: nexquare/nifi:1.6.1
+    container_name: nifi
+    hostname: nifi
+    ports:
+      - "8089:8080"
+    volumes:
+      - dropzone:/var/dropzone
+#      - /opt/nifi/config.properties:/opt/nifi/data/lib/config.properties
+#      - /opt/nifi/nifi.properties:/opt/nifi/current/conf/nifi.properties
+    networks:
+      - kylo
+  kylo-ui:
+    image: nexquare/kylo-ui:0.9.1.3
+    container_name: kylo-ui
+    ports: 
+      - "8400:8400"
+    volumes:
+      - /opt/kylo/kylo-ui/conf:/opt/kylo/kylo-ui/conf
+      - /opt/kylo/users.properties:/opt/kylo/users.properties
+    networks:
+      - kylo
+  kylo-services:
+    image: nexquare/kylo-services:0.9.1.3
+    container_name: kylo-services
+    volumes:
+      - /opt/kylo/kylo-services/conf:/opt/kylo/kylo-services/conf
+      - /opt/kylo/users.properties:/opt/kylo/users.properties
+      - dropzone:/var/dropzone
+    networks:
+      - kylo
+
+volumes: 
+  data-esnx:
+    driver: local
+  dropzone:
+    driver: local
+
+networks: 
+  kylo:

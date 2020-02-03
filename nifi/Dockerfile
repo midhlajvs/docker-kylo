@@ -36,6 +36,7 @@ RUN apt-get update && \
 RUN git clone https://github.com/teradata/kylo.git /opt/kylok8s && \
     cd /opt/kylok8s && \
     git checkout tags/v0.9.1.3 && \
+    sed -i 's/http\:\/\/repo1\.maven\.org\/maven2/https\:\/\/repo1\.maven\.org\/maven2/' pom.xml && \
     mvn clean install -DskipTests
 
 RUN cd /opt/kylok8s && \
@@ -47,7 +48,7 @@ RUN cd /opt/kylok8s && \
 
 ##########
 
-FROM nexquare/nifi-parent:1.6.0
+FROM nexquare/nifi-parent:1.7.1
 LABEL maintainer="Midhlaj VS <midhlaj.vs@nexquare.io>"
 LABEL site="https://nifi.apache.org/"
 
@@ -63,14 +64,14 @@ USER root
 RUN mkdir -p /opt/nifi/activemq && \
     mkdir -p /opt/nifi/mysql && \
     mkdir -p /opt/nifi/drivers && \
-    mkdir -p /opt/nifi/nifi-1.6.0/lib/app && \
+    mkdir -p /opt/nifi/nifi-1.7.1/lib/app && \
     mkdir -p /opt/nifi/dump && \
     mkdir -p /opt/nifi/drivers && \
     mkdir -p /opt/fake_data && \
     mkdir -p /var/dropzone && \
     chown -R nifi:nifi /var/dropzone && \
     chown -R nifi:nifi /opt/fake_data && \
-    ln -f -s /opt/nifi/nifi-1.6.0 /opt/nifi/current
+    ln -f -s /opt/nifi/nifi-1.7.1 /opt/nifi/current
 
 # Spark
 RUN cd /opt && wget -q https://archive.apache.org/dist/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.6.tgz && \
@@ -83,10 +84,10 @@ ENV PATH=$PATH:/opt/spark/bin
 
 # Kylo JARS + Deps
 RUN /opt/nifi/data/lib/create-symbolic-links.sh /opt/nifi nifi nifi && \
-    wget https://central.maven.org/maven2/org/apache/activemq/activemq-all/5.15.0/activemq-all-5.15.0.jar -P /opt/nifi/activemq/ && \
-    wget https://central.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.2.4/mariadb-java-client-2.2.4.jar -P /opt/nifi/drivers/ && \
+    wget https://repo1.maven.org/maven2/org/apache/activemq/activemq-all/5.15.0/activemq-all-5.15.0.jar -P /opt/nifi/activemq/ && \
+    wget https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/2.2.4/mariadb-java-client-2.2.4.jar -P /opt/nifi/drivers/ && \
     wget https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/1.5.7/mariadb-java-client-1.5.7.jar -P /opt/nifi/mysql/ && \
-    wget https://central.maven.org/maven2/org/apache/hive/hcatalog/hive-hcatalog-core/2.3.2/hive-hcatalog-core-2.3.2.jar -P /opt/nifi/drivers/ && \
+    wget https://repo1.maven.org/maven2/org/apache/hive/hcatalog/hive-hcatalog-core/2.3.2/hive-hcatalog-core-2.3.2.jar -P /opt/nifi/drivers/ && \
     wget https://jdbc.postgresql.org/download/postgresql-42.2.4.jar -P /opt/spark/jars/
 
 # Impala JDBC driver
